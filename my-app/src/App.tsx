@@ -2,7 +2,7 @@ import Calculator from "./components/Calculator";
 
 function App() {
   return (
-    <main className="space-y-7 py-6 px-5">
+    <main className="space-y-7 p-8">
       <header>
         <h1 className="text-lg font-semibold text-sm-black">
           Debt Consolidation Savings Calculator

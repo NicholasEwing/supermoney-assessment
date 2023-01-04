@@ -5,5 +5,5 @@ interface RowProps {
 }
 
 export default function Row({ children }: RowProps) {
-  return <div className="grid grid-cols-4 gap-4">{children}</div>;
+  return <div className="relative grid grid-cols-4 gap-4">{children}</div>;
 }
