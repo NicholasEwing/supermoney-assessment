@@ -12,7 +12,7 @@ export default function Calculator() {
   return (
     <>
       {calculateSavings ? (
-        <ConfigureResult />
+        <ConfigureResult handleCalculateSavings={handleCalculateSavings} />
       ) : (
         <DebtInputForm handleCalculateSavings={handleCalculateSavings} />
       )}

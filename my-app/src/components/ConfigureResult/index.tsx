@@ -1,7 +1,17 @@
-export default function ConfigureResult() {
+import { MouseEventHandler } from "react";
+
+interface ConfigureResultProps {
+  handleCalculateSavings: MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function ConfigureResult({
+  handleCalculateSavings,
+}: ConfigureResultProps) {
   return (
     <>
-      <button>&#x2190; Update Your Current Debts</button>
+      <button onClick={handleCalculateSavings}>
+        &#x2190; Update Your Current Debts
+      </button>
       <div className="box">
         <div className="sliders">
           <h2>Configure Your Consolidated Loan</h2>
