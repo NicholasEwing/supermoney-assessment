@@ -1,8 +1,16 @@
-export default function CalculateSavingsButton() {
+import { MouseEventHandler } from "react";
+
+interface CalculateSavingsButtonProps {
+  onClick: MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function CalculateSavingsButton({
+  onClick,
+}: CalculateSavingsButtonProps) {
   return (
     <button
-      type="submit"
-      className="mx-auto mt-10 block w-full rounded-sm bg-sm-blue p-3 font-medium text-white"
+      onClick={onClick}
+      className="mx-auto mt-10 block w-full rounded-md bg-sm-blue p-3 font-medium text-white"
     >
       Calculate Savings
     </button>
