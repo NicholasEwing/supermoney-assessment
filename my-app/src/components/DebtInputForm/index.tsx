@@ -1,11 +1,13 @@
-import { MouseEventHandler, useState } from "react";
-import DebtItem from "../../types/DebtItem";
+import React, { MouseEventHandler } from "react";
+import { DebtItems } from "../../types";
 import Row from "../Containers/Row";
 import AddDebtButton from "./AddDebtButton";
 import CalculateSavingsButton from "./CalculateSavingsButton";
 import DebtItemRow from "./DebtItemRow";
 
 interface DebtInputFormProps {
+  debtItems: DebtItems;
+  setDebtItems: React.Dispatch<React.SetStateAction<DebtItems>>;
   handleCalculateSavings: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -16,25 +18,29 @@ const headers = [
   "Current Monthly Payment",
 ];
 
-type DebtItems = DebtItem[];
+let id = 0;
 
 export default function DebtInputForm({
+  debtItems,
+  setDebtItems,
   handleCalculateSavings,
 }: DebtInputFormProps) {
-  const [debtItems, setDebtItems] = useState<DebtItems>([
-    { name: "", remainingAmount: 0, currentApr: 0, currentMonthly: 0 },
-  ]);
-
   const handleNewItem = () => {
     const newDebtItems = [
       ...debtItems,
       {
+        id: ++id,
         name: "",
         remainingAmount: 0,
         currentApr: 0,
         currentMonthly: 0,
       },
     ];
+    setDebtItems(newDebtItems);
+  };
+
+  const handleRemoveItem = (id: number) => {
+    const newDebtItems = debtItems.filter((item) => item.id !== id);
     setDebtItems(newDebtItems);
   };
 
@@ -47,7 +53,7 @@ export default function DebtInputForm({
         {headers.map((name, i) => (
           <span
             key={`${i}-${name}`}
-            className="max-w-40 text-xs font-semibold uppercase tracking-wider text-sm-dark-gray"
+            className=" text-xs font-semibold uppercase tracking-wider text-sm-dark-gray"
           >
             {name}
           </span>
@@ -55,18 +61,19 @@ export default function DebtInputForm({
       </Row>
       {/* TODO: create way to manage items state */}
       {/* TODO: hook up input fields to items state */}
-      <Row>
-        {debtItems.map((i) => (
-          <DebtItemRow
-            name={"Credit Card"}
-            remainingAmount={0}
-            currentApr={0}
-            currentMonthly={0}
-          />
-        ))}
-      </Row>
+      {debtItems.map((item) => (
+        <DebtItemRow
+          key={`debt-item-row-${item.id}`}
+          id={item.id}
+          name={"Credit Card"}
+          remainingAmount={0}
+          currentApr={0}
+          currentMonthly={0}
+          handleRemoveItem={handleRemoveItem}
+        />
+      ))}
       <div className="space-y-6">
-        <AddDebtButton onClick={handleNewItem} />
+        <AddDebtButton handleNewItem={handleNewItem} />
         <CalculateSavingsButton onClick={handleCalculateSavings} />
       </div>
     </div>
