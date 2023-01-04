@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React, { ChangeEvent, MouseEventHandler } from "react";
 import { DebtItems } from "../../types";
 import Row from "../Containers/Row";
 import AddDebtButton from "./AddDebtButton";
@@ -8,6 +8,7 @@ import DebtItemRow from "./DebtItemRow";
 interface DebtInputFormProps {
   debtItems: DebtItems;
   setDebtItems: React.Dispatch<React.SetStateAction<DebtItems>>;
+  handleChanges: (e: ChangeEvent<HTMLInputElement>) => void;
   handleCalculateSavings: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -23,6 +24,7 @@ let id = 0;
 export default function DebtInputForm({
   debtItems,
   setDebtItems,
+  handleChanges,
   handleCalculateSavings,
 }: DebtInputFormProps) {
   const handleNewItem = () => {
@@ -59,19 +61,20 @@ export default function DebtInputForm({
           </span>
         ))}
       </Row>
-      {/* TODO: create way to manage items state */}
-      {/* TODO: hook up input fields to items state */}
-      {debtItems.map((item) => (
-        <DebtItemRow
-          key={`debt-item-row-${item.id}`}
-          id={item.id}
-          name={"Credit Card"}
-          remainingAmount={0}
-          currentApr={0}
-          currentMonthly={0}
-          handleRemoveItem={handleRemoveItem}
-        />
-      ))}
+      {debtItems.map(
+        ({ id, name, remainingAmount, currentApr, currentMonthly }) => (
+          <DebtItemRow
+            key={`debt-item-row-${id}`}
+            id={id}
+            name={name}
+            remainingAmount={remainingAmount}
+            currentApr={currentApr}
+            currentMonthly={currentMonthly}
+            handleChanges={handleChanges}
+            handleRemoveItem={handleRemoveItem}
+          />
+        )
+      )}
       <div className="space-y-6">
         <AddDebtButton handleNewItem={handleNewItem} />
         <CalculateSavingsButton onClick={handleCalculateSavings} />

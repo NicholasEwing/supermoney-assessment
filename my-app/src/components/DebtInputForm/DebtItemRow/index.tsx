@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Row from "../../Containers/Row";
 import { DebtItem } from "../../../types";
+import { ChangeEvent } from "react";
 
 interface DebtItemRowProps extends DebtItem {
   handleRemoveItem: (id: number) => void;
+  handleChanges: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function DebtItemRow({
@@ -14,29 +16,46 @@ export default function DebtItemRow({
   remainingAmount,
   currentApr,
   currentMonthly,
+  handleChanges,
   handleRemoveItem,
 }: DebtItemRowProps) {
   return (
     <Row>
-      <Input type="text" name="debt-name" placeholder="Medical" />
       <Input
-        type="number"
-        name="remaining-debt-amount"
-        placeholder="5000"
-        symbol="$"
+        id={id}
+        type="text"
+        name="name"
+        placeholder="Medical"
+        value={name || ""}
+        handleChanges={handleChanges}
       />
       <Input
+        id={id}
         type="number"
-        name="current-apr"
+        name="remainingAmount"
+        placeholder="5000"
+        symbol="$"
+        value={remainingAmount || ""}
+        handleChanges={handleChanges}
+      />
+      <Input
+        id={id}
+        type="number"
+        name="currentApr"
         placeholder="15.99"
         symbol="%"
         symbolPos="right"
+        value={currentApr || ""}
+        handleChanges={handleChanges}
       />
       <Input
+        id={id}
         type="number"
-        name="current-monthly-payment"
+        name="currentMonthly"
         placeholder="200"
         symbol="$"
+        value={currentMonthly || ""}
+        handleChanges={handleChanges}
       />
       {id > 0 && (
         <button
