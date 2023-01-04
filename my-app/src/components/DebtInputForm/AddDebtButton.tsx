@@ -1,9 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { MouseEventHandler } from "react";
 
-export default function AddDebtButton() {
+interface AddDebtButtonProps {
+  onClick: MouseEventHandler<HTMLButtonElement>;
+}
+
+export default function AddDebtButton({ onClick }: AddDebtButtonProps) {
   return (
-    <button className="space-x-1 text-sm-blue">
+    <button onClick={onClick} className="space-x-2 text-sm-blue">
       <FontAwesomeIcon className="stroke-current stroke-[60px]" icon={faPlus} />
       <span>Add Another Debt</span>
     </button>

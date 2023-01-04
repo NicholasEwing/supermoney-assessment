@@ -1,10 +1,12 @@
-import { FormEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
+import DebtItem from "../../types/DebtItem";
 import Row from "../Containers/Row";
 import AddDebtButton from "./AddDebtButton";
 import CalculateSavingsButton from "./CalculateSavingsButton";
+import DebtItemRow from "./DebtItemRow";
 
 interface DebtInputFormProps {
-  handleCalculateSavings: FormEventHandler<HTMLFormElement>;
+  handleCalculateSavings: MouseEventHandler<HTMLButtonElement>;
 }
 
 const headers = [
@@ -14,11 +16,30 @@ const headers = [
   "Current Monthly Payment",
 ];
 
+type DebtItems = DebtItem[];
+
 export default function DebtInputForm({
   handleCalculateSavings,
 }: DebtInputFormProps) {
+  const [debtItems, setDebtItems] = useState<DebtItems>([
+    { name: "", remainingAmount: 0, currentApr: 0, currentMonthly: 0 },
+  ]);
+
+  const handleNewItem = () => {
+    const newDebtItems = [
+      ...debtItems,
+      {
+        name: "",
+        remainingAmount: 0,
+        currentApr: 0,
+        currentMonthly: 0,
+      },
+    ];
+    setDebtItems(newDebtItems);
+  };
+
   return (
-    <form onSubmit={handleCalculateSavings} className="space-y-3">
+    <div className="space-y-3">
       <h2 className="text-sm font-semibold uppercase tracking-wide text-sm-black">
         Enter your current debts
       </h2>
@@ -32,44 +53,22 @@ export default function DebtInputForm({
           </span>
         ))}
       </Row>
-      {/* TODO: create item object shape */}
       {/* TODO: create way to manage items state */}
       {/* TODO: hook up input fields to items state */}
-      {/* for each item, display row w/ input fields... */}
       <Row>
-        <input
-          type="text"
-          name="debt-name"
-          id="debt-name"
-          placeholder="Credit Card"
-          className="w-40 border border-sm-light-gray bg-sky p-2"
-        />
-        <input
-          type="number"
-          placeholder="5000"
-          id="remaining-debt-amount"
-          name="remaining-debt-amount"
-          className="w-40 border border-sm-light-gray bg-sky p-2"
-        />
-        <input
-          type="number"
-          placeholder="15.99"
-          id="current-apr"
-          name="current-apr"
-          className="w-40 border border-sm-light-gray bg-sky p-2"
-        />
-        <input
-          type="number"
-          placeholder="200"
-          id="current-monthly-payment"
-          name="current-monthly-payment"
-          className="w-40 border border-sm-light-gray bg-sky p-2"
-        />
+        {debtItems.map((i) => (
+          <DebtItemRow
+            name={"Credit Card"}
+            remainingAmount={0}
+            currentApr={0}
+            currentMonthly={0}
+          />
+        ))}
       </Row>
       <div className="space-y-6">
-        <AddDebtButton />
-        <CalculateSavingsButton />
+        <AddDebtButton onClick={handleNewItem} />
+        <CalculateSavingsButton onClick={handleCalculateSavings} />
       </div>
-    </form>
+    </div>
   );
 }
