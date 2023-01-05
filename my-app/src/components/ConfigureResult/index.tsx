@@ -32,15 +32,57 @@ export default function ConfigureResult({
 
   // calculate monthly ResultBox info
   const monthly = {
-    new: 0,
+    newAmount: 0,
     current: 0,
     total: 0,
   };
-  monthly.new = finance.calculatePayment(totalDebt, desiredTerm, desiredApr);
+  monthly.newAmount = finance.calculatePayment(
+    totalDebt,
+    desiredTerm,
+    desiredApr
+  );
   monthly.current = getSum(debtItems, "currentMonthly");
-  monthly.total = monthly.current - monthly.new;
+  monthly.total = monthly.current - monthly.newAmount;
 
   // TODO: calculate total ResultBox info
+  const total = {
+    newAmount: 0,
+    current: 0,
+    total: 0,
+  };
+  total.newAmount = debtItems.reduce((sum, debtItem) => {
+    const { remainingAmount } = debtItem;
+    const mosRemaining = finance.calculateMonths(
+      remainingAmount,
+      desiredApr,
+      monthly.newAmount
+    );
+
+    if (monthly.newAmount) {
+      const totalRepayment = mosRemaining * monthly.newAmount;
+      sum += totalRepayment;
+    }
+    return sum;
+  }, 0);
+
+  // for every debt item... calculate total repayment and sum them up
+  total.current = debtItems.reduce((sum, debtItem) => {
+    const { remainingAmount, currentApr, currentMonthly } = debtItem;
+    // find mos. remaining for this item
+    const mosRemaining = finance.calculateMonths(
+      remainingAmount,
+      currentApr,
+      currentMonthly
+    );
+
+    // find the total repayment for this item
+    if (currentMonthly) {
+      const totalRepayment = mosRemaining * currentMonthly;
+      sum += totalRepayment;
+    }
+    return sum;
+  }, 0);
+  total.total = total.current - total.newAmount;
 
   return (
     <div>
@@ -61,7 +103,7 @@ export default function ConfigureResult({
         </div>
       </div>
       <div className="flex">
-        {/* <ResultsBox type="Repayment" /> */}
+        <ResultsBox type="Repayment" result={total} />
         <ResultsBox type="Monthly" result={monthly} />
       </div>
     </div>

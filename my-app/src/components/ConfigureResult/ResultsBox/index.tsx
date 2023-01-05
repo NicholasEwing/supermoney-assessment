@@ -1,3 +1,4 @@
+import { finance } from "../../../lib/finance";
 import { ResultObject } from "../../../types";
 import ResultsLineItem from "./ResultsLineItem";
 
@@ -7,6 +8,8 @@ interface ResultsBoxProps {
 }
 
 export default function ResultsBox({ type, result }: ResultsBoxProps) {
+  const { newAmount, current, total } = result;
+
   const newPaymentMsg =
     type === "Repayment" ? "New Total Repayment" : "New Monthly Payment";
   const currentPaymentMsg =
@@ -16,17 +19,29 @@ export default function ResultsBox({ type, result }: ResultsBoxProps) {
   const savingsResultMsg =
     type === "Repayment" ? "Total Repayment Savings" : "Total Monthly Savings";
 
+  const formatNum = (num: number) => {
+    if (num > 0) {
+      return finance.format(num, "USD");
+    } else {
+      return "-";
+    }
+  };
+
   return (
     <div className="flex w-1/2 flex-col space-y-8 border-l border-b border-sm-light-gray pt-8 last:border-r">
-      <ResultsLineItem msg={newPaymentMsg} value={result.new} timeline="New" />
+      <ResultsLineItem
+        msg={newPaymentMsg}
+        value={formatNum(newAmount)}
+        timeline="New"
+      />
       <ResultsLineItem
         msg={currentPaymentMsg}
-        value={result.current}
+        value={formatNum(current)}
         timeline="Current"
       />
       <ResultsLineItem
         msg={savingsResultMsg}
-        value={result.total}
+        value={formatNum(total)}
         timeline="Total"
       />
     </div>

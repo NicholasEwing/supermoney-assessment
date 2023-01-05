@@ -26,7 +26,7 @@ export default function ResultsLineItem({
   return (
     <div className={`${bgColor} ${marginAndWidth} flex justify-between`}>
       <p className="text-lg">{msg}</p>
-      <p className={`${textColor} ${fontWeight} ${fontSize}`}>${value}</p>
+      <p className={`${textColor} ${fontWeight} ${fontSize}`}>{value}</p>
     </div>
   );
 }
