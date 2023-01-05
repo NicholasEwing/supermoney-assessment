@@ -2,6 +2,7 @@
 
 **Notes:**
 
+- **Time Spent:** I crammed this into my busy week, so I've only worked on it for two days. I'd guess I spent about 10 - 12 hours to be super conservative.
 - **Sliders:** Styling slider inputs is way harder than I imagined due to inconsistent browser behavior. I tried my best with these and figured it wasn't worth pouring more than an hour into. I think the design I used looks pretty good!
 - **Directly Changing State:** A couple of my objects (`monthly` / `results`, also not the best names) in the `<ConfigureResult>` components are acting as application state and being directly modified. I know this a BIG no-no in React and would never be shipped to prod, but for the sake of time I wasn't able to correct this. I'd love to discuss a better solution for moving those variables into the state without infinite looping renders.
 - **Remaining Debt Input:** This number input doesn't use commas - I spent about 45 minutes fighting with formatting to get a comma to appear while typing. However, this introduces a lot of edge-cases with strings that I didn't feel it was worth writing code and checking for. Overall, the commas are nice but they don't add much value to the app so I left the input field as a number for this assessment.
