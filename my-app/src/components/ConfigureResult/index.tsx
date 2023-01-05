@@ -1,5 +1,5 @@
 import finance from "../../lib/finance";
-import { ChangeEvent, MouseEventHandler, useState } from "react";
+import { MouseEventHandler } from "react";
 import ConfigureHeader from "./ConfigureHeader";
 import ConfigureSlider from "./ConfigureSlider";
 import ResultsBox from "./ResultsBox";
@@ -40,7 +40,6 @@ export default function ConfigureResult({
   monthly.current = getSum(debtItems, "currentMonthly");
   monthly.total = monthly.current - monthly.newAmount;
 
-  // TODO: calculate total ResultBox info
   const total = {
     newAmount: 0,
     current: 0,
