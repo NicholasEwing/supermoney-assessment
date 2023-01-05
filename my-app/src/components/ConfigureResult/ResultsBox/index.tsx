@@ -1,10 +1,12 @@
+import { ResultObject } from "../../../types";
 import ResultsLineItem from "./ResultsLineItem";
 
 interface ResultsBoxProps {
   type: "Repayment" | "Monthly";
+  result: ResultObject;
 }
 
-export default function ResultsBox({ type }: ResultsBoxProps) {
+export default function ResultsBox({ type, result }: ResultsBoxProps) {
   const newPaymentMsg =
     type === "Repayment" ? "New Total Repayment" : "New Monthly Payment";
   const currentPaymentMsg =
@@ -16,13 +18,17 @@ export default function ResultsBox({ type }: ResultsBoxProps) {
 
   return (
     <div className="flex w-1/2 flex-col space-y-8 border-l border-b border-sm-light-gray pt-8 last:border-r">
-      <ResultsLineItem msg={newPaymentMsg} value={1234} timeline="New" />
+      <ResultsLineItem msg={newPaymentMsg} value={result.new} timeline="New" />
       <ResultsLineItem
         msg={currentPaymentMsg}
-        value={1234}
+        value={result.current}
         timeline="Current"
       />
-      <ResultsLineItem msg={savingsResultMsg} value={1234} timeline="Total" />
+      <ResultsLineItem
+        msg={savingsResultMsg}
+        value={result.total}
+        timeline="Total"
+      />
     </div>
   );
 }
