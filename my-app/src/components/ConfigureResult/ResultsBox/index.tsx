@@ -20,8 +20,10 @@ export default function ResultsBox({ type, result }: ResultsBoxProps) {
     type === "Repayment" ? "Total Repayment Savings" : "Total Monthly Savings";
 
   const formatNum = (num: number) => {
-    if (num > 0) {
+    if (num > 0 && type === "Monthly") {
       return finance.format(num, "USD");
+    } else if (num > 0) {
+      return `$${Math.round(num).toLocaleString()}`;
     } else {
       return "-";
     }
