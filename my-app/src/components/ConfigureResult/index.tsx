@@ -10,24 +10,20 @@ import { getSum } from "../../lib/utils";
 interface ConfigureResultProps {
   debtItems: DebtItems;
   handleCalculateSavings: MouseEventHandler<HTMLButtonElement>;
+  desiredApr: number;
+  desiredTerm: number;
+  handleAprChange: React.ChangeEventHandler<HTMLInputElement>;
+  handleTermChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export default function ConfigureResult({
   debtItems,
   handleCalculateSavings,
+  desiredApr,
+  desiredTerm,
+  handleAprChange,
+  handleTermChange,
 }: ConfigureResultProps) {
-  // init slider state
-  const [desiredApr, setDesiredApr] = useState(8);
-  const [desiredTerm, setDesiredTerm] = useState(24);
-
-  // Handle sliders
-  const handleAprChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDesiredApr(parseInt(e.target.value));
-  };
-  const handleTermChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDesiredTerm(parseInt(e.target.value));
-  };
-
   const totalDebt = getSum(debtItems, "remainingAmount");
 
   // calculate monthly ResultBox info

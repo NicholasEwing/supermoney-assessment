@@ -1,18 +1,19 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { DebtItems } from "../types";
 import ConfigureResult from "./ConfigureResult";
 import DebtInputForm from "./DebtInputForm";
 
 export default function Calculator() {
+  // toggles input or results
   const [calculateSavings, setCalculateSavings] = useState(false);
+  const handleCalculateSavings = () => setCalculateSavings(!calculateSavings);
+
+  // displays and handles input fields
   const [debtItems, setDebtItems] = useState<DebtItems>([
     {
       id: 0,
     },
   ]);
-
-  const handleCalculateSavings = () => setCalculateSavings(!calculateSavings);
-
   const handleChanges = (e: ChangeEvent<HTMLInputElement>) => {
     const { id, name, value } = e.target;
 
@@ -23,12 +24,27 @@ export default function Calculator() {
     setDebtItems(newDebtItems);
   };
 
+  // handles slider logic
+  const [desiredApr, setDesiredApr] = useState(8);
+  const [desiredTerm, setDesiredTerm] = useState(24);
+  const makeHandler = (fn: React.Dispatch<React.SetStateAction<number>>) => {
+    return function (e: ChangeEvent<HTMLInputElement>) {
+      fn(parseInt(e.target.value));
+    };
+  };
+  const handleAprChange = makeHandler(setDesiredApr);
+  const handleTermChange = makeHandler(setDesiredTerm);
+
   return (
     <>
       {calculateSavings ? (
         <ConfigureResult
           debtItems={debtItems}
           handleCalculateSavings={handleCalculateSavings}
+          desiredApr={desiredApr}
+          desiredTerm={desiredTerm}
+          handleAprChange={handleAprChange}
+          handleTermChange={handleTermChange}
         />
       ) : (
         <DebtInputForm
